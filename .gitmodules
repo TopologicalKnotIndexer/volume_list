@@ -1,0 +1,6 @@
+[submodule "src/name_to_pd_code"]
+	path = src/name_to_pd_code
+	url = git@github.com:TopologicalKnotIndexer/name_to_pd_code.git
+[submodule "src/volume_solver"]
+	path = src/volume_solver
+	url = git@github.com:TopologicalKnotIndexer/volume_solver.git
