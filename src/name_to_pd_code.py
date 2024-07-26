@@ -21,4 +21,4 @@ def name_to_pd_code(knotname: str) -> list:
     return load_module_from_path(SUBDIR, "get_knot_pd_code_by_name").get_knot_pd_code_by_name(knotname)
 
 if __name__ == "__main__":
-    print(name_to_pd_code("K3a1,K5a1"))
+    print(name_to_pd_code("K11n117"))
