@@ -18,7 +18,7 @@ def load_module_from_path(path: str, mod_name: str): # 从指定路径导入一�
 # ======================================== END IMPORT FROM PATH ======================================== #
 
 def get_volume(knotname: str) -> list:
-    return load_module_from_path(SUBDIR, "volume_solver").get_volume(knotname)
+    return load_module_from_path(SUBDIR, "reliable_volume_solver").get_volume_safe(knotname)
 
 if __name__ == "__main__":
     print(get_volume([[4, 2, 5, 1], [8, 6, 1, 5], [6, 3, 7, 4], [2, 7, 3, 8]]))
