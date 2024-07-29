@@ -22,8 +22,7 @@ def main():
             continue
         pd_code = name_to_pd_code(line)
         volume  = get_volume(pd_code)
-        if isinstance(volume, float): # 浮点数保留二十位小数，将来也是要通过 EPS 比较的
-            volume = "%.20f" % volume
+        volume  = "%.20f" % volume
         fp.write("[%s|%s]\n" % (line, volume))
         fp.flush()
 
