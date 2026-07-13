@@ -1,0 +1,11 @@
+# BEGIN VENDORED DEPENDENCY BYTE-PRESERVATION
+# Keep vendored files byte-for-byte identical to their pinned Git objects.
+/src/name_to_pd_code/** -text
+/src/name_to_pd_code/src/pd_code_list/** -text
+/src/name_to_pd_code/src/connected_sum/** -text
+/src/name_to_pd_code/src/connected_sum/src/pd_code_input_sanity/** -text
+/src/name_to_pd_code/src/connected_sum/src/get_in_out_code/** -text
+/src/volume_solver/** -text
+/src/volume_solver/src/pd_code_to_dt_code/** -text
+/src/volume_solver/src/pd_code_to_dt_code/src/get_in_out_code/** -text
+# END VENDORED DEPENDENCY BYTE-PRESERVATION

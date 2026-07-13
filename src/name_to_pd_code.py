@@ -1,24 +1,44 @@
-# 桥接：https://github.com/TopologicalKnotIndexer/name_to_pd_code
-import os
-DIRNOW = os.path.dirname(os.path.abspath(__file__))
-SUBDIR = os.path.join(DIRNOW, "name_to_pd_code", "src") # 子包路径
+"""Run the bundled name-to-PD resolver as a local program."""
 
-# ======================================== BEGIN IMPORT FROM PATH ======================================== #
-import importlib
-import json
+from ast import literal_eval
+from pathlib import Path
+import subprocess
 import sys
-def load_module_from_path(path: str, mod_name: str): # 从指定路径导入一个包
-    assert os.path.isdir(path)                       # 路径必须存在
-    path         = os.path.abspath(path)             # 获得绝对路径
-    old_sys_path = json.loads(json.dumps(sys.path))  # 存档旧的 sys.path
-    sys.path     = [path] + sys.path                 # 将新的路径加入 sys.path
-    mod          = importlib.import_module(mod_name) # 加载指定的包
-    sys.path     = old_sys_path                      # 恢复旧的 sys.path
-    return mod
-# ======================================== END IMPORT FROM PATH ======================================== #
 
-def name_to_pd_code(knotname: str) -> list:
-    return load_module_from_path(SUBDIR, "get_knot_pd_code_by_name").get_knot_pd_code_by_name(knotname)
 
-if __name__ == "__main__":
-    print(name_to_pd_code("K11n117"))
+SOURCE_DIR = Path(__file__).resolve().parent
+RESOLVER_MAIN = SOURCE_DIR / "name_to_pd_code" / "src" / "main.py"
+
+
+def name_to_pd_code(knotname: str, *, timeout: float = 30.0) -> list[list[int]]:
+    """Return the bundled resolver's PD code for *knotname*."""
+
+    if not isinstance(knotname, str):
+        raise TypeError("knotname must be a string")
+    if not RESOLVER_MAIN.is_file():
+        raise FileNotFoundError(RESOLVER_MAIN)
+    if timeout <= 0:
+        raise ValueError("timeout must be positive")
+    completed = subprocess.run(
+        [sys.executable, str(RESOLVER_MAIN)],
+        input=knotname,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=timeout,
+        check=False,
+    )
+    if completed.returncode != 0:
+        detail = completed.stderr.strip() or completed.stdout.strip()
+        raise RuntimeError(
+            f"bundled name resolver failed with exit code {completed.returncode}: "
+            f"{detail or 'no diagnostic output'}"
+        )
+    try:
+        pd_code = literal_eval(completed.stdout.strip())
+    except (SyntaxError, ValueError) as exc:
+        raise RuntimeError(f"bundled name resolver returned invalid output: {completed.stdout!r}") from exc
+    if not isinstance(pd_code, list):
+        raise RuntimeError("bundled name resolver did not return a PD-code list")
+    return pd_code
