@@ -70,3 +70,16 @@ python -m unittest discover -s tests -v
 ```
 
 No Python packages are installed or published by repository maintenance.
+
+## Citation
+
+If you use this repository in academic work, please cite it as:
+
+```bibtex
+@software{topologicalknotindexer_volume_list,
+  author = {{TopologicalKnotIndexer contributors}},
+  title = {{volume\_list}},
+  year = {2026},
+  url = {https://github.com/TopologicalKnotIndexer/volume_list}
+}
+```
